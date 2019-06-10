@@ -1,53 +1,107 @@
 # 🌜  Dynamic Scope 🌛 #
 
 ## Dynamic Scope v.s. Lexical Scope
+> `Dynamic scope` : Where they are called from.
+
+> `Lexical Scope` : Look-up a variable and where it will find it. 
+
+- ### Here is an example of Dynamic Scope : ###
+
+        function foo() {
+            console.log( a ); // What will console.log be?
+        }
+
+        function bar() {
+            var a = 3;
+            foo();
+        }
+
+        var a = 2;
+
+        bar();
+
+    Scope Chain is based on the `call-stack`, not the nesting of scopes in code.
+
+- ### Scope Chain : ###
+
+        function foo() { 
+            console.log( a );  
+        }
+
+        function bar() {  
+            var a = 3; 
+            foo(); 
+        }
+
+        var a = 2;
+
+        bar();  
+
+
+    `Global/Window` ➡️ `bar()` ➡️  `foo()` ➡️ `console.log(a)`  
+
+    #### Related Work 
+    > [NCCU Programming Languages (Page.36)](http://www.cs.nccu.edu.tw/~chenk/Courses/PL/Lectures/PL-Lect-5-S06.pdf)
+
+
+- ### How about Lexical Scope : ###
+
+        function foo() {
+            console.log( a ); // What will console.log be?
+        }
+
+        function bar() {
+            var a = 3;
+            foo();
+        }
+
+        var a = 2;
+
+        bar();
+    `RHS reference` to a in foo() will be resolved to the global variable a , which will result in value 2 being output.
+
+
+## Dynamic Scope v.s. `this`
 
 > `Dynamic Scope` actually is a near cousin to another mechanism [` this `](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Operators/this) in JavaScript .
 
-###Here is an example of Dynamic Scope :###
+- ### `this` in Global/Window or Scope
 
-    function foo() {
-        console.log( a ); // What will console.log be?
-    }
+        console.log(this);
+        console.log(this === Window);
+        function foo(){
+            console.log(this === Window);
+        }
+        var a = 3
+        foo.bind(a)();
 
-    function bar() {
-        var a = 3;
-        foo();
-    }
+        var boo = {
+            b : 2,
+            fun : function(){
+                console.log(this);
+            }
+        }
+        boo.fun();
 
-    var a = 2;
+    `this` in object will point to objcet.
 
-    bar();
+    `this` in function will point to Global/Window.
 
-> the scope chain is based on the `call-stack`, not the nesting of scopes in code.
+- ### use `this` to realize Dynamic Scope
 
-###Scope Chain :###
+        function foo() {
+            console.log(this.a);
+        }
 
-    function foo() { -----(find foo (3))
-        console.log( a );  -----(call a (4))
-    }
+        var bar = {
+            a: 3,
+            foofn: function() {
+                foo.bind(this)();
+            }
+        };
 
-    function bar() {  -----(find bar (1))
-        var a = 3; -----(find a (5))
-        foo(); -----(call foo (2))
-    }
+        var a = 2;
 
-    var a = 2;
+        bar.foofn();
 
-    bar();  -----(call bar (0))
-
-### How about Lexical Scope : ###
-
-    function foo() {
-        console.log( a ); // What will console.log be?
-    }
-
-    function bar() {
-        var a = 3;
-        foo();
-    }
-
-    var a = 2;
-
-    bar();
-> `RHS reference` to a in foo() will be resolved to the global variable a , which will result in value 2 being output
+    `this` in bar which will point to bar.
