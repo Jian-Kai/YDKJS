@@ -1,12 +1,5 @@
-function foo() {
-    console.log(this.a);
-  }
-  
-  var obj = {
-    a: 2,
-    foo: foo
-  };
-  
-  var bar = obj.foo.bind(obj);
-  var a = 'oops, global';
-  bar(); // 'oops, global'
+{
+  let a = 2;
+  console.log( a ); // 2
+}
+console.log( a ); // ReferenceError
