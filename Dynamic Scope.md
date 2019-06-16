@@ -76,7 +76,8 @@
             b : 2,
             fun : function(){
                 console.log(this);
-            }
+            },
+            bo: this
         }
         boo.fun();
 
@@ -101,4 +102,4 @@
 
         bar.foofn();
 
-    > `this` in bar which will point to bar.
+    > `this` in bar will point to bar.
