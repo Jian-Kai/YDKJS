@@ -1,4 +1,4 @@
-# 🌜  PloyFiling Block Scople 🌛 #
+# 🌜  PloyFilling Block Scople 🌛 #
 
 ## Use block scope in pre-ES6 environments ##
 
